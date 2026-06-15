@@ -1,0 +1,18 @@
+-- Define the arguments
+local args = {
+	buffer.fromstring("\154\000\025")
+}
+
+-- Fetch the RemoteEvent once beforehand so it doesn't have to look it up every second
+local remoteEvent = game:GetService("ReplicatedStorage")
+    :WaitForChild("SharedModules")
+    :WaitForChild("Packet")
+    :WaitForChild("RemoteEvent")
+
+-- Run the loop in a separate thread so it doesn't block the rest of your script
+task.spawn(function()
+    while true do
+        remoteEvent:FireServer(unpack(args))
+        task.wait(1) -- Waits exactly 1 second before the next iteration
+    end
+end)
